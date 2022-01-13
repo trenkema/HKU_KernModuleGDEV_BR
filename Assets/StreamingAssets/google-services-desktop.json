@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "435683366890",
+    "firebase_url": "https://partygamesnovagamestm-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "partygamesnovagamestm",
+    "storage_bucket": "partygamesnovagamestm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:435683366890:android:46ff9fe49b01e96ba50493",
+        "android_client_info": {
+          "package_name": "com.NovaGamesTM.PartyGames"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "435683366890-vp4lracr49g5ei53tjbe6ts4872ajdd6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6l5Gzb2WfeeTAckRTZFxM8f32yEtytsI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "435683366890-vp4lracr49g5ei53tjbe6ts4872ajdd6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
