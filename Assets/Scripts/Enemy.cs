@@ -101,6 +101,11 @@ public class Enemy : MonoBehaviourPunCallbacks, IDamageable
         }
     }
 
+    public void TakeDamageOverTime(int _damage, int _duration, int _timeBetweenDamage, string _killerSource)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public void Died(bool beenShot)
     {
         PV.RPC("RPC_Explode", RpcTarget.All);

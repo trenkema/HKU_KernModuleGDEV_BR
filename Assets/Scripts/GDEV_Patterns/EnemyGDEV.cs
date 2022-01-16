@@ -90,6 +90,21 @@ public class EnemyGDEV : MonoBehaviour, IDamageable
         }
     }
 
+    public void TakeDamageOverTime(int _damage, int _duration, int _timeBetweenDamage, string _killerSource)
+    {
+        StartCoroutine(DamageOverTime(_damage, _duration, _timeBetweenDamage));
+    }
+
+    private IEnumerator DamageOverTime(int _damage, int _duration, int _timeBetweenDamage)
+    {
+        for (int i = 0; i < _duration; i++)
+        {
+            yield return new WaitForSeconds(_timeBetweenDamage);
+
+            health -= _damage;
+        }
+    }
+
     public void Died(bool beenShot)
     {
         RPC_Explode();

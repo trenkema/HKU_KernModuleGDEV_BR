@@ -143,6 +143,11 @@ public class _Player : MonoBehaviourPunCallbacks, IDamageable
         }
     }
 
+    public void TakeDamageOverTime(int _damage, int _duration, int _timeBetweenDamage, string _killerSource)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public void Died(string _killerSource)
     {
         if (!PV.IsMine)

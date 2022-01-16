@@ -130,7 +130,16 @@ public class GunGDEV : MonoBehaviour
 
             if (bullet != null)
             {
+                BulletGDEV bulletScript = bullet.GetComponent<BulletGDEV>();
+
                 bullet.SetActive(true);
+
+                ISpell curSpell = bulletScript.GetSpell();
+                IceDecorator iceDecorator = new IceDecorator(5, 0);
+                curSpell = iceDecorator.Decorate(curSpell);
+
+                bulletScript.SetSpell(curSpell);
+
                 bullet.transform.position = barrelCenter.transform.position;
                 bullet.transform.rotation = barrelCenter.transform.rotation;
             }
