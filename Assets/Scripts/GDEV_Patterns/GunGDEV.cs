@@ -34,6 +34,7 @@ public class GunGDEV : MonoBehaviour
     [SerializeField] private GameObject gunHolder;
 
     [Header("Graphics")]
+    [SerializeField] GameObject[] gunParticles;
     [SerializeField] private GameObject bulletHoleGraphic;
     [SerializeField] private ParticleSystem muzzleFlash;
     [SerializeField] private TextMeshProUGUI bulletsInformation;
@@ -48,6 +49,8 @@ public class GunGDEV : MonoBehaviour
     private bool canHold = true;
     private int bulletsShot;
 
+    private IBulletSpell curGunSpell;
+
     private void Start()
     {
         for (int i = 0; i < GameControllerGDEV.instance.objectPoolers.Length; i++)
@@ -57,6 +60,8 @@ public class GunGDEV : MonoBehaviour
                 objectPool = GameControllerGDEV.instance.objectPoolers[i];
             }
         }
+
+        curGunSpell = new BulletSpell(0);
 
         bulletsLeft = magazineSize;
         readyToShoot = true;
@@ -134,9 +139,19 @@ public class GunGDEV : MonoBehaviour
 
                 bullet.SetActive(true);
 
-                ISpell curSpell = bulletScript.GetSpell();
-                IceDecorator iceDecorator = new IceDecorator(5, 0);
-                curSpell = iceDecorator.Decorate(curSpell);
+                IBulletSpell curSpell = bulletScript.GetSpell();
+
+                if (curGunSpell.spellTypes.HasFlag(SpellType.Fire))
+                {
+                    FireDecorator fireDecorator = new FireDecorator(15, 0);
+                    curSpell = fireDecorator.Decorate(curSpell);
+                }
+
+                if (curGunSpell.spellTypes.HasFlag(SpellType.Ice))
+                {
+                    IceDecorator iceDecorator = new IceDecorator(5, 1);
+                    curSpell = iceDecorator.Decorate(curSpell);
+                }
 
                 bulletScript.SetSpell(curSpell);
 
@@ -196,5 +211,33 @@ public class GunGDEV : MonoBehaviour
     {
         bulletsLeft = magazineSize;
         EventSystem.RaiseEvent(Event_Type.UPDATE_GUN_UI);
+    }
+
+    public void AddSpell(SpellType _spell)
+    {
+        switch (_spell)
+        {
+            case SpellType.Fire:
+                FireDecorator fireDecorator = new FireDecorator(15, 0);
+                curGunSpell = fireDecorator.Decorate(curGunSpell);
+                break;
+            case SpellType.Ice:
+                IceDecorator iceDecorator = new IceDecorator(5, 1);
+                curGunSpell = iceDecorator.Decorate(curGunSpell);
+                break;
+        }
+
+        SetDecoration();
+    }
+
+    private void SetDecoration()
+    {
+        foreach (var particle in curGunSpell.particleIndexes)
+        {
+            if (particle != -1)
+            {
+                gunParticles[particle].SetActive(true);
+            }
+        }
     }
 }

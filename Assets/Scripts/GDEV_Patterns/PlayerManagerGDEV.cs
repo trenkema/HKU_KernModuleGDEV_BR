@@ -16,11 +16,18 @@ public class PlayerManagerGDEV : MonoBehaviour
 
     [SerializeField] GameObject playerPrefab;
 
+    [SerializeField] MeshRenderer[] objectsToHide;
+
+    [SerializeField] GameObject effectsOnButton;
+    [SerializeField] GameObject effectsOffButton;
+
     // Private Non-Inspector Variables
     private GameObject controller;
 
     private bool hasStarted = false;
     private bool isAlive = false;
+
+    private bool effectsOn = false;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +35,9 @@ public class PlayerManagerGDEV : MonoBehaviour
         isAlive = true;
 
         CreateController();
+
+        effectsOffButton.SetActive(true);
+        effectsOnButton.SetActive(false);
 
         winnerScreen.SetActive(false);
         loserScreen.SetActive(false);
@@ -52,32 +62,30 @@ public class PlayerManagerGDEV : MonoBehaviour
 
     void CreateController()
     {
-        //GameObject playerSpawnPoint = GameController.instance.playerSpawnPoints[Random.Range(0, GameController.instance.playerSpawnPoints.Length)];
+        foreach (var item in objectsToHide)
+        {
+            item.enabled = false;
+        }
+
         controller = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
-        //GameController.instance.networkPlaySound = PhotonNetwork.Instantiate("NetworkPlaySound", Vector3.zero, Quaternion.identity).GetComponent<NetworkPlaySound>();
 
         controller.GetComponent<_PlayerGDEV>().enabled = false;
 
         isAlive = true;
-
-        //StartCoroutine(AddPlayerCount());
     }
 
     public void PlayerDied()
     {
         isAlive = false;
 
+        Destroy(controller);
+
+        controller = null;
+
+        CheckIfGameOver(0);
+
         // CreateController(); To Respawn Player
     }
-
-    //IEnumerator AddPlayerCount()
-    //{
-    //    float test = Random.Range(0.5f, 3f);
-    //    yield return new WaitForSeconds(test);
-    //    playersAliveCount = (int)PhotonNetwork.CurrentRoom.CustomProperties["PlayersAlive"];
-    //    playersAliveCount++;
-    //    PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable() { { "PlayersAlive", playersAliveCount } });
-    //}
 
     private void StartGame()
     {
@@ -85,6 +93,21 @@ public class PlayerManagerGDEV : MonoBehaviour
         controller.transform.position = GameControllerGDEV.instance.playerSpawnPoints[randomSpawnpoint].transform.position;
 
         controller.GetComponent<_PlayerGDEV>().enabled = true;
+
+        hasStarted = true;
+
+        StartCoroutine(AddEffects());
+    }
+
+    private IEnumerator AddEffects()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        if (effectsOn)
+        {
+            controller.GetComponent<GunManagerGDEV>().AddSpell(SpellType.Fire);
+            controller.GetComponent<GunManagerGDEV>().AddSpell(SpellType.Ice);
+        }
     }
 
     public void LeaveRoom()
@@ -96,7 +119,7 @@ public class PlayerManagerGDEV : MonoBehaviour
 
         EventSystem.Unsubscribe(Event_Type.START_GAME, StartGame);
         EventSystem.Unsubscribe(Event_Type.PLAYER_DEATH, PlayerDied);
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(2);
     }
 
     public void QuitGame()
@@ -136,5 +159,13 @@ public class PlayerManagerGDEV : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void ToggleEffects()
+    {
+        effectsOffButton.SetActive(!effectsOffButton.activeInHierarchy);
+        effectsOnButton.SetActive(!effectsOnButton.activeInHierarchy);
+
+        effectsOn = !effectsOn;
     }
 }

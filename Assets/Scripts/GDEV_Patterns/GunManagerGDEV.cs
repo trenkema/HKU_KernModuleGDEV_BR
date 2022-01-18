@@ -49,6 +49,7 @@ public class GunManagerGDEV : MonoBehaviour
         EventSystem.Unsubscribe(Event_Type.START_GAME, StartGame);
         EventSystem.Unsubscribe(Event_Type.END_GAME, GameOver);
         EventSystem.Unsubscribe(Event_Type.PLAYER_DEATH, PlayerDied);
+        EventSystem.Unsubscribe(Event_Type.UPDATE_GUN_UI, UpdateGunUI);
         EventSystem<bool>.Unsubscribe(Event_Type.PLAYER_RELOADING, CheckPlayerReloading);
     }
 
@@ -181,6 +182,19 @@ public class GunManagerGDEV : MonoBehaviour
     private void CheckPlayerReloading(bool _isReloading)
     {
         isReloading = _isReloading;
+    }
+
+    public void AddSpell(SpellType _spell)
+    {
+        switch (_spell)
+        {
+            case SpellType.Fire:
+                weaponInventory[activeSlot].GetComponent<GunGDEV>().AddSpell(SpellType.Fire);
+                break;
+            case SpellType.Ice:
+                weaponInventory[activeSlot].GetComponent<GunGDEV>().AddSpell(SpellType.Ice);
+                break;
+        }
     }
 }
 

@@ -10,7 +10,7 @@ public class BulletGDEV : MonoBehaviour
     [SerializeField] private float destroyTime = 5f;
     [SerializeField] private LayerMask layersToInteract;
 
-    private ISpell someSpell;
+    private IBulletSpell someSpell;
 
     [SerializeField] GameObject[] bulletParticles;
 
@@ -21,7 +21,7 @@ public class BulletGDEV : MonoBehaviour
             particle.SetActive(false);
         }
 
-        someSpell = new Spell(damage);
+        someSpell = new BulletSpell(damage);
         someSpell.Cast();
 
         Invoke("DestroyBullet", destroyTime);
@@ -57,12 +57,12 @@ public class BulletGDEV : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public ISpell GetSpell()
+    public IBulletSpell GetSpell()
     {
         return someSpell;
     }
 
-    public void SetSpell(ISpell _spell)
+    public void SetSpell(IBulletSpell _spell)
     {
         someSpell = _spell;
 

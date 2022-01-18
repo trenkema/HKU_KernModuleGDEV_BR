@@ -7,7 +7,7 @@ using Photon.Pun;
 public class RoomManager : MonoBehaviourPunCallbacks
 {
     public static RoomManager Instance;
-    public MeshRenderer[] objectsToDisable;
+    public MeshRenderer[] objectsToHide;
 
     // Start is called before the first frame update
     void Awake()
@@ -37,7 +37,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     {
         if (scene.buildIndex == 1)
         {
-            foreach (var item in objectsToDisable)
+            foreach (var item in objectsToHide)
             {
                 item.enabled = false;
             }

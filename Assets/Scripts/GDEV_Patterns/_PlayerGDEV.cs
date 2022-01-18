@@ -112,7 +112,7 @@ public class _PlayerGDEV : MonoBehaviour, IDamageable
     public void Died(string _killerSource)
     {
         string killerText = _killerSource.ToUpper();
-        EventSystem<string, string>.RaiseEvent(Event_Type.PLAYER_KILLED, "Enemy", killerText);
+        //EventSystem<string, string>.RaiseEvent(Event_Type.PLAYER_KILLED, "Enemy", killerText);
         EventSystem.Unsubscribe(Event_Type.END_GAME, GameOver);
         EventSystem.RaiseEvent(Event_Type.PLAYER_DEATH);
     }
